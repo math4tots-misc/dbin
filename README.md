@@ -4,9 +4,10 @@ Like regular expression, but for binary data
 
 A lightweight utility for parsing and rendering binary data
 
-It's meant to be a bit quick and dirty, but also really convenient
-and even if it might not be able to cover all cases, it's meant
-to cover a lot of them.
+It's meant to be a bit quick and dirty and convenient.
+Even if it might not exhaustively cover all cases, it should
+be able to cover a lot of them with minimal effort. You know,
+like regular expressions.
 
 ## Example
 
@@ -33,6 +34,12 @@ fn main() {
     // together with 'dbin::Expr', you can dynamically
     // specify the length of array types based on
     // input seen earlier in the data.
+    // NOTE: 'en' is short for 'enum' and 'st' is short
+    // for 'struct'.
+    // 'en' creates a spec that chooses from a list of
+    // alternatives, and
+    // 'st' creates a spec that requires a heterogeneous
+    // list of specs to be parsed in sequence.
     let spec = Spec::en(vec![
         ("big", Spec::st(vec![
             Spec::be_magic_u64(1234),
