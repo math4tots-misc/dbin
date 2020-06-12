@@ -3,6 +3,9 @@ name = "dbin"
 version = "0.1.0"
 authors = ["Kyumin Kim <math4tots@users.noreply.github.com>"]
 edition = "2018"
+license = "Apache-2.0"
+repository = "https://github.com/math4tots/dbin"
+description = "Regex-like utility for parsing and rendering binary data"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
