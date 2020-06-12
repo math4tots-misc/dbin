@@ -1,6 +1,6 @@
 # dbin: Declarative binary parser
 
-Like regular expression, but for binary data
+Like regular expressions, but for binary data
 
 A lightweight utility for parsing and rendering binary data
 
