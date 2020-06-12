@@ -4,11 +4,6 @@ Like regular expressions, but for binary data
 
 A lightweight utility for parsing and rendering binary data
 
-It's meant to be a bit quick and dirty and convenient.
-Even if it might not exhaustively cover all cases, it should
-be able to cover a lot of them with minimal effort. You know,
-like regular expressions.
-
 ## Example
 
 ```rust
