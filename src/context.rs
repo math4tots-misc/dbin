@@ -1,8 +1,9 @@
+use crate::Key;
 use std::collections::HashMap;
 
-pub struct ReadContext<'a> {
+pub struct Context<'a> {
     /// Simple key value store to aid in the process of parsing
-    map_stack: Vec<HashMap<ContextValue, ContextValue>>,
+    map_stack: Vec<HashMap<Key, Key>>,
 
     /// index into bytes
     pos: usize,
@@ -13,7 +14,14 @@ pub struct ReadContext<'a> {
     bytes: &'a [u8],
 }
 
-impl<'a> ReadContext<'a> {
+impl<'a> Context<'a> {
+    pub fn new(bytes: &'a [u8]) -> Context<'a> {
+        Context {
+            map_stack: vec![HashMap::new()],
+            pos: 0,
+            bytes,
+        }
+    }
     pub fn peek(&self, n: usize) -> Result<&'a [u8], String> {
         match self.bytes.get(self.pos..self.pos + n) {
             Some(s) => Ok(s),
@@ -27,28 +35,25 @@ impl<'a> ReadContext<'a> {
             None => Err("Tried to read beyond end".to_owned()),
         }
     }
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub enum ContextValue {
-    Int(i64),
-    String(String),
-}
-
-impl From<i64> for ContextValue {
-    fn from(i: i64) -> ContextValue {
-        ContextValue::Int(i)
+    pub fn push_stack(&mut self, map: HashMap<Key, Key>) {
+        self.map_stack.push(map);
     }
-}
-
-impl From<String> for ContextValue {
-    fn from(s: String) -> ContextValue {
-        ContextValue::String(s)
+    pub fn pop_stack(&mut self) {
+        self.map_stack.pop().unwrap();
     }
-}
-
-impl From<&str> for ContextValue {
-    fn from(s: &str) -> ContextValue {
-        ContextValue::String(s.to_owned())
+    pub fn getvar<K: Into<Key>>(&self, k: K) -> Option<&Key> {
+        self.map_stack.last().unwrap().get(&k.into())
+    }
+    pub fn store(&self) -> usize {
+        self.pos
+    }
+    pub fn restore(&mut self, pos: usize) {
+        self.pos = pos;
+    }
+    pub fn setvar<K: Into<Key>, V: Into<Key>>(&mut self, k: K, v: V) {
+        self.map_stack
+            .last_mut()
+            .unwrap()
+            .insert(k.into(), v.into());
     }
 }
