@@ -76,14 +76,9 @@ impl From<i64> for Renderable {
         Renderable::I64(Endian::Little, i)
     }
 }
-impl<T: Into<Renderable>> From<Vec<T>> for Renderable {
-    fn from(v: Vec<T>) -> Renderable {
-        Renderable::Seq(v.into_iter().map(|t| t.into()).collect())
-    }
-}
-impl<T: Into<Renderable> + Clone> From<&[T]> for Renderable {
-    fn from(v: &[T]) -> Renderable {
-        v.to_vec().into()
+impl From<Vec<Renderable>> for Renderable {
+    fn from(vec: Vec<Renderable>) -> Renderable {
+        Renderable::Seq(vec)
     }
 }
 impl<A1: Into<Renderable>, A2: Into<Renderable>> From<(A1, A2)> for Renderable {
@@ -103,6 +98,90 @@ impl<A1: Into<Renderable>, A2: Into<Renderable>, A3: Into<Renderable>, A4: Into<
 {
     fn from(x: (A1, A2, A3, A4)) -> Renderable {
         Renderable::Seq(vec![x.0.into(), x.1.into(), x.2.into(), x.3.into()])
+    }
+}
+impl<
+        A1: Into<Renderable>,
+        A2: Into<Renderable>,
+        A3: Into<Renderable>,
+        A4: Into<Renderable>,
+        A5: Into<Renderable>,
+    > From<(A1, A2, A3, A4, A5)> for Renderable
+{
+    fn from(x: (A1, A2, A3, A4, A5)) -> Renderable {
+        Renderable::Seq(vec![
+            x.0.into(),
+            x.1.into(),
+            x.2.into(),
+            x.3.into(),
+            x.4.into(),
+        ])
+    }
+}
+impl<
+        A1: Into<Renderable>,
+        A2: Into<Renderable>,
+        A3: Into<Renderable>,
+        A4: Into<Renderable>,
+        A5: Into<Renderable>,
+        A6: Into<Renderable>,
+    > From<(A1, A2, A3, A4, A5, A6)> for Renderable
+{
+    fn from(x: (A1, A2, A3, A4, A5, A6)) -> Renderable {
+        Renderable::Seq(vec![
+            x.0.into(),
+            x.1.into(),
+            x.2.into(),
+            x.3.into(),
+            x.4.into(),
+            x.5.into(),
+        ])
+    }
+}
+impl<
+        A1: Into<Renderable>,
+        A2: Into<Renderable>,
+        A3: Into<Renderable>,
+        A4: Into<Renderable>,
+        A5: Into<Renderable>,
+        A6: Into<Renderable>,
+        A7: Into<Renderable>,
+    > From<(A1, A2, A3, A4, A5, A6, A7)> for Renderable
+{
+    fn from(x: (A1, A2, A3, A4, A5, A6, A7)) -> Renderable {
+        Renderable::Seq(vec![
+            x.0.into(),
+            x.1.into(),
+            x.2.into(),
+            x.3.into(),
+            x.4.into(),
+            x.5.into(),
+            x.6.into(),
+        ])
+    }
+}
+impl<
+        A1: Into<Renderable>,
+        A2: Into<Renderable>,
+        A3: Into<Renderable>,
+        A4: Into<Renderable>,
+        A5: Into<Renderable>,
+        A6: Into<Renderable>,
+        A7: Into<Renderable>,
+        A8: Into<Renderable>,
+    > From<(A1, A2, A3, A4, A5, A6, A7, A8)> for Renderable
+{
+    fn from(x: (A1, A2, A3, A4, A5, A6, A7, A8)) -> Renderable {
+        Renderable::Seq(vec![
+            x.0.into(),
+            x.1.into(),
+            x.2.into(),
+            x.3.into(),
+            x.4.into(),
+            x.5.into(),
+            x.6.into(),
+            x.7.into(),
+        ])
     }
 }
 
