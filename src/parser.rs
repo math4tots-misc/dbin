@@ -177,6 +177,15 @@ impl Pattern {
         })
     }
 
+    /// if self -> X, this changes this pattern so that it returns
+    /// [name, X] instead.
+    /// Primarily for debugging purposes, when you want to see
+    /// what value comes from what pattern
+    pub fn label<D: Into<Data>>(self, name: D) -> Pattern {
+        let name = name.into();
+        self.map(move |_, data| Ok(vec![name.clone(), data].into()))
+    }
+
     /// convenience method that accepts a list of keys
     /// and returns a Pattern that when parsed will return a
     /// map of list of (name, value) pairs, where the names

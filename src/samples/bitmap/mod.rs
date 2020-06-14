@@ -35,11 +35,19 @@ pub fn file_header() -> Pattern {
 pub fn dib_header() -> Pattern {
     use crate::prelude::*;
 
-    all_of((
-        U32.store(Key::DibHeaderSize),
-        U32.store(Key::WidthInPixels),
-        U32.store(Key::HeightInPixels),
-    ))
+    all_of(vec![
+        U32.store(Key::DibHeaderSize).label("dib-header-size"),
+        U32.store(Key::WidthInPixels).label("width-in-pixels"),
+        U32.store(Key::HeightInPixels).label("height-in-pixels"),
+        U16.label("color-planes"),
+        U16.label("bits-per-pixel"),
+        U32.label("compression-method"),
+        U32.label("raw-image-size"),
+        U32.label("horizontal-resolution"),
+        U32.label("vertical-resolution"),
+        U32.label("colors-in-palette"),
+        U32.label("ignored-important-color-count"),
+    ])
 }
 
 #[cfg(test)]
