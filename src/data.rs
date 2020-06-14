@@ -5,7 +5,7 @@ pub enum Data {
     Int(i64),
     Float(f64),
     Bytes(Rc<Vec<u8>>),
-    String(Rc<str>),
+    String(Rc<String>),
     Seq(Rc<Vec<Data>>),
 }
 
@@ -41,7 +41,14 @@ impl Data {
             None
         }
     }
-    pub fn str(&self) -> Option<&Rc<str>> {
+    pub fn str(&self) -> Option<&str> {
+        if let Data::String(s) = self {
+            Some(s)
+        } else {
+            None
+        }
+    }
+    pub fn string(&self) -> Option<&Rc<String>> {
         if let Data::String(s) = self {
             Some(s)
         } else {
@@ -111,14 +118,14 @@ impl From<&[u8]> for Data {
     }
 }
 
-impl From<Rc<str>> for Data {
-    fn from(x: Rc<str>) -> Data {
+impl From<Rc<String>> for Data {
+    fn from(x: Rc<String>) -> Data {
         Data::String(x)
     }
 }
 
-impl From<&Rc<str>> for Data {
-    fn from(x: &Rc<str>) -> Data {
+impl From<&Rc<String>> for Data {
+    fn from(x: &Rc<String>) -> Data {
         Data::String(x.clone())
     }
 }
