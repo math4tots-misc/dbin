@@ -192,11 +192,14 @@ impl Pattern {
     /// are generated from Debug of the keys and value comes from
     /// lookup up the Scope
     pub fn to_map<K: Into<i64> + Debug>(self, keys: Vec<K>) -> Pattern {
-        let pairs: Vec<_> = keys.into_iter().map(|k| {
-            let s: Data = format!("{:?}", k).into();
-            let k: i64 = k.into();
-            (k, s)
-        }).collect();
+        let pairs: Vec<_> = keys
+            .into_iter()
+            .map(|k| {
+                let s: Data = format!("{:?}", k).into();
+                let k: i64 = k.into();
+                (k, s)
+            })
+            .collect();
         self.map(move |scope, _| {
             let mut ret = Vec::new();
             for (key, keystr) in pairs.clone() {
