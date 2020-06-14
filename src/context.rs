@@ -57,7 +57,16 @@ impl Scope {
     pub fn get(&self, key: i64) -> Option<&Data> {
         self.0.get(&key)
     }
+    pub fn get_or_error(&self, key: i64) -> Result<&Data, ParseError> {
+        match self.get(key) {
+            Some(val) => Ok(val),
+            None => err(format!("Key {:?} not found", key)),
+        }
+    }
     pub fn set(&mut self, key: i64, value: Data) {
         self.0.insert(key, value);
+    }
+    pub fn map(&self) -> &HashMap<i64, Data> {
+        &self.0
     }
 }

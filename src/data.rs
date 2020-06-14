@@ -10,9 +10,16 @@ pub enum Data {
 }
 
 impl Data {
-    pub fn seq(vec: Vec<Data>) -> Data {
+    /// Data from a sequence
+    pub fn fseq(vec: Vec<Data>) -> Data {
         Data::Seq(vec.into())
     }
+
+    /// Data from bytes
+    pub fn fbytes(bytes: Vec<u8>) -> Data {
+        Data::Bytes(bytes.into())
+    }
+
     pub fn i64(&self) -> Option<i64> {
         if let Data::Int(i) = self {
             Some(*i)
@@ -41,7 +48,7 @@ impl Data {
             None
         }
     }
-    pub fn list(&self) -> Option<&Rc<Vec<Data>>> {
+    pub fn seq(&self) -> Option<&Rc<Vec<Data>>> {
         if let Data::Seq(s) = self {
             Some(s)
         } else {

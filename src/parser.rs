@@ -3,6 +3,7 @@ use crate::Context;
 use crate::Data;
 use crate::Expr;
 use crate::Scope;
+use std::fmt::Debug;
 
 #[derive(Debug, Clone)]
 pub enum ParseError {
@@ -62,8 +63,8 @@ impl Pattern {
         let d = d.into();
         self.map(move |_, _| Ok(d.clone()))
     }
-    pub fn store(self, key: i64) -> Pattern {
-        Pattern::Store(self.into(), key)
+    pub fn store<K: Into<i64>>(self, key: K) -> Pattern {
+        Pattern::Store(self.into(), key.into())
     }
     pub fn parse(&self, bytes: &[u8]) -> Result<Data, ParseError> {
         let mut ctx = Context::new(bytes);
@@ -173,6 +174,29 @@ impl Pattern {
                 (Data::String(a), Data::String(b)) => Ok(format!("{}{}", a, b).into()),
                 (a, b) => err(format!("Could not add given values ({:?}, {:?})", a, b,)),
             }
+        })
+    }
+
+    /// convenience method that accepts a list of keys
+    /// and returns a Pattern that when parsed will return a
+    /// map of list of (name, value) pairs, where the names
+    /// are generated from Debug of the keys and value comes from
+    /// lookup up the Scope
+    pub fn to_map<K: Into<i64> + Debug>(self, keys: Vec<K>) -> Pattern {
+        let pairs: Vec<_> = keys.into_iter().map(|k| {
+            let s: Data = format!("{:?}", k).into();
+            let k: i64 = k.into();
+            (k, s)
+        }).collect();
+        self.map(move |scope, _| {
+            let mut ret = Vec::new();
+            for (key, keystr) in pairs.clone() {
+                let val: Data = scope.get_or_error(key)?.clone();
+                let key: Data = keystr.into();
+                let pair: Data = vec![key, val].into();
+                ret.push(pair);
+            }
+            Ok(ret.into())
         })
     }
 }

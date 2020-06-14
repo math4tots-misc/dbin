@@ -1,4 +1,3 @@
-use crate::err;
 pub use crate::Expr;
 pub use crate::Pattern;
 use crate::PatternVec;
@@ -85,9 +84,7 @@ pub fn array_of<E: Into<Expr>>(p: Pattern, e: E) -> Pattern {
 
 /// Convenience method -- returns the expression from
 /// retrieving a value from the scope
-pub fn getvar(key: i64) -> Expr {
-    Expr::new(move |scope| match scope.get(key) {
-        Some(val) => Ok(val.clone()),
-        None => err(format!("Key {:?} not found", key)),
-    })
+pub fn getvar<K: Into<i64>>(key: K) -> Expr {
+    let key = key.into();
+    Expr::new(move |scope| scope.get_or_error(key).map(|d| d.clone()))
 }

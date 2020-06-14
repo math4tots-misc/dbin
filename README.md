@@ -51,7 +51,7 @@ fn main() {
     // The resulting value will be a dbin::Data instance
     let data = parser.parse(&bytes).unwrap();
 
-    assert_eq!(data, Data::seq(vec![
+    assert_eq!(data, Data::fseq(vec![
         "little-endian".into(),
         Data::Int(1234),
         Data::Int(80),
@@ -92,11 +92,11 @@ fn main() {
 
     assert_eq!(
         data,
-        Data::seq(vec![
+        Data::fseq(vec![
             Data::Int(1234), // magic,
             Data::Int(4),    // length
             // the actual array
-            Data::seq(vec![
+            Data::fseq(vec![
                 Data::Int(777),
                 Data::Int(888),
                 Data::Int(999),

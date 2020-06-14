@@ -5,6 +5,7 @@ mod parser;
 pub mod prelude;
 mod pvec;
 mod render;
+pub mod samples;
 
 pub use context::Context;
 pub use context::Scope;
@@ -43,7 +44,7 @@ mod tests {
 
         assert_eq!(
             data,
-            Data::seq(vec![Data::Int(1234), Data::Int(80), Data::Int(195),])
+            Data::fseq(vec![Data::Int(1234), Data::Int(80), Data::Int(195),])
         );
         assert_eq!(50000, (195 << 8) + 80);
     }
@@ -68,7 +69,7 @@ mod tests {
 
         assert_eq!(
             data,
-            Data::seq(vec![
+            Data::fseq(vec![
                 "little-endian".into(),
                 Data::Int(1234),
                 Data::Int(80),
@@ -112,11 +113,11 @@ mod tests {
 
         assert_eq!(
             data,
-            Data::seq(vec![
+            Data::fseq(vec![
                 Data::Int(1234), // magic,
                 Data::Int(4),    // length
                 // the actual array
-                Data::seq(vec![
+                Data::fseq(vec![
                     Data::Int(777),
                     Data::Int(888),
                     Data::Int(999),
@@ -139,11 +140,11 @@ mod tests {
 
         assert_eq!(
             data,
-            Data::seq(vec![
+            Data::fseq(vec![
                 Data::Int(1234), // magic,
                 Data::Int(5),    // length
                 // the actual array
-                Data::seq(vec![
+                Data::fseq(vec![
                     Data::Int(777),
                     Data::Int(888),
                     Data::Int(999),

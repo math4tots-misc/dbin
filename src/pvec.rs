@@ -21,6 +21,11 @@ impl<A1: Into<Pattern>> From<A1> for PatternVec {
         PatternVec(vec![a1.into()])
     }
 }
+impl<A1: Into<Pattern>> From<(A1, )> for PatternVec {
+    fn from(a1: (A1, )) -> PatternVec {
+        PatternVec(vec![a1.0.into()])
+    }
+}
 impl<A1, A2> From<(A1, A2)> for PatternVec
 where
     A1: Into<Pattern>,
